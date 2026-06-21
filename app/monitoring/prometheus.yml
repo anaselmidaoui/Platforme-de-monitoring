@@ -1,0 +1,26 @@
+global:
+  scrape_interval:     15s
+  evaluation_interval: 15s
+
+scrape_configs:
+
+  - job_name: "service-a"
+    metrics_path: /actuator/prometheus
+    dns_sd_configs:
+      - names: ["tasks.service-a"]
+        type: "A"
+        port: 8080
+
+  - job_name: "service-b"
+    metrics_path: /actuator/prometheus
+    dns_sd_configs:
+      - names: ["tasks.service-b"]
+        type: "A"
+        port: 8080
+
+  - job_name: "service-c"
+    metrics_path: /actuator/prometheus
+    dns_sd_configs:
+      - names: ["tasks.service-c"]
+        type: "A"
+        port: 8080

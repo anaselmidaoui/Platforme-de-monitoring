@@ -1,0 +1,60 @@
+networks:
+  monitoring-network:
+    driver: bridge
+    name: monitoring-network
+
+services:
+
+  # ── Frontend React (Vite + Tailwind, servi par Nginx) ────────────────────
+  frontend:
+    build:
+      context: ./frontend
+    container_name: frontend
+    ports:
+      - "3000:3000"
+    networks:
+      - monitoring-network
+    depends_on:
+      - service-a
+      - service-b
+      - service-c
+    restart: unless-stopped
+
+  # ── Microservice A ────────────────────────────────────────────────────────
+  service-a:
+    build:
+      context: ./service-a
+    container_name: service-a
+    ports:
+      - "8081:8080"
+    environment:
+      - SPRING_APPLICATION_NAME=service-a
+    networks:
+      - monitoring-network
+    restart: unless-stopped
+
+  # ── Microservice B ────────────────────────────────────────────────────────
+  service-b:
+    build:
+      context: ./service-b
+    container_name: service-b
+    ports:
+      - "8082:8080"
+    environment:
+      - SPRING_APPLICATION_NAME=service-b
+    networks:
+      - monitoring-network
+    restart: unless-stopped
+
+  # ── Microservice C ────────────────────────────────────────────────────────
+  service-c:
+    build:
+      context: ./service-c
+    container_name: service-c
+    ports:
+      - "8083:8080"
+    environment:
+      - SPRING_APPLICATION_NAME=service-c
+    networks:
+      - monitoring-network
+    restart: unless-stopped
